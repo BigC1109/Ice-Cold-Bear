@@ -13,7 +13,7 @@ namespace DevcadeGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D metalBar;
-        private Tuple<int, int> Coordinates; // width, height
+        public static Tuple<int, int> Coordinates = Tuple.Create(420, 980); // width, height
         private Dictionary<int, int[]> metalBarPosition = new Dictionary<int, int[]>();
 
         /// <summary>
@@ -39,7 +39,6 @@ namespace DevcadeGame
             // Actual size, change to this when submit
             // width = 420
             // height = 980
-            Coordinates = Tuple.Create(420, 980);
             _graphics.PreferredBackBufferWidth = Coordinates.Item1;
             _graphics.PreferredBackBufferHeight = Coordinates.Item2;
             //_graphics.ApplyChanges();
