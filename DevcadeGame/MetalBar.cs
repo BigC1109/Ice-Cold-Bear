@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using tainicom.Aether.Physics2D.Dynamics;
 
 namespace DevcadeGame
 {
@@ -19,11 +20,13 @@ namespace DevcadeGame
 
         private float rotation;
 
+        private Body body;
+
         public Texture2D Texture { get; private set; }
 
         private Color Color { get; set; }
 
-        public MetalBar(Texture2D texture)
+        public MetalBar(Texture2D texture, Body body)
         {
             this.Texture = texture;
 
@@ -33,6 +36,8 @@ namespace DevcadeGame
             this.positionR = new Vector2(Game1.Coordinates.Item1, Game1.Coordinates.Item2 - 30);
             this.Color = Color.DarkGray;
             this.rotation = 0;
+
+            this.body = body;
         }
         public Rectangle Hitbox
         {
@@ -81,6 +86,8 @@ namespace DevcadeGame
 
             rotation = (float)Math.Atan2(positionR.Y - positionL.Y, positionR.X - positionL.X);
             hitbox.Y = (int)positionL.Y;
+            body.Position = new Vector2(positionL.X, positionL.Y + 15);
+            body.Rotation = rotation;
         }
 
         public void Draw(SpriteBatch sb)

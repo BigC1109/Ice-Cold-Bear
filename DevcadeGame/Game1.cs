@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using tainicom.Aether.Physics2D.Dynamics;
 
 namespace DevcadeGame
 {
@@ -15,6 +16,8 @@ namespace DevcadeGame
         public Texture2D MetalBarTexture { get; set; }
         public static Tuple<int, int> Coordinates = Tuple.Create(420, 980); // width, height
         public MetalBar MetalBar { get; set; }
+        public Ball Ball { get; set; }
+        public World World { get; set; }
 
         /// <summary>
         /// Game constructor
@@ -32,6 +35,33 @@ namespace DevcadeGame
         protected override void Initialize()
         {
             Input.Initialize(); // Sets up the input library
+
+            World = new World();
+            World.Gravity = new Vector2(0, 40f);
+
+            var top = 0;
+            var bottom = Coordinates.Item2;
+            var left = 0;
+            var right = Coordinates.Item1;
+            var edges = new Body[] {
+                World.CreateEdge(new Vector2(left, top), new Vector2(right, top)),
+                World.CreateEdge(new Vector2(left, top), new Vector2(left, bottom)),
+                World.CreateEdge(new Vector2(left, bottom), new Vector2(right, bottom)),
+                World.CreateEdge(new Vector2(right, top), new Vector2(right, bottom)),
+            };
+
+            foreach (var edge in edges)
+            {
+                edge.BodyType = BodyType.Static;
+                edge.SetRestitution(1);
+            }
+
+            var radius = 25;
+            var position = new Vector2(Coordinates.Item1 / 2, Coordinates.Item2 / 2);
+            var body = World.CreateCircle(radius, 1, position, BodyType.Dynamic);
+            body.SetRestitution(0);
+
+            Ball = new Ball(radius, body);
 
             MetalBarTexture = new Texture2D(GraphicsDevice, 1, 1);
             MetalBarTexture.SetData(new Color[] { Color.Gray });
@@ -59,7 +89,9 @@ namespace DevcadeGame
             #endregion
 
             // TODO: Add your initialization logic here
-            MetalBar = new MetalBar(MetalBarTexture);
+
+            var metalBarBody = World.CreateRectangle(Coordinates.Item1 + 800, 30, 1, new Vector2(0, Coordinates.Item2 - 30), 0, BodyType.Static);
+            MetalBar = new MetalBar(MetalBarTexture, metalBarBody);
 
             base.Initialize();
         }
@@ -71,7 +103,9 @@ namespace DevcadeGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // MetalBarTexture = Content.Load<Texture2D>("download");
+            Ball.LoadContent(Content);
+
+            // BallTexture = Content.Load<Texture2D>("CircleSprite");
 
             // TODO: use this.Content to load your game content here
             // ex.
@@ -99,6 +133,9 @@ namespace DevcadeGame
             // TODO: Add your update logic here
             MetalBar.Update(gameTime);
 
+            Ball.Update(gameTime);
+            World.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
+
             // Debug.WriteLine($"H1: {Heights[0]} | H2: {Heights[1]}");
 
             base.Update(gameTime);
@@ -115,6 +152,7 @@ namespace DevcadeGame
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
 
+            Ball.Draw(_spriteBatch);
             MetalBar.Draw(_spriteBatch);
 
             _spriteBatch.End();
