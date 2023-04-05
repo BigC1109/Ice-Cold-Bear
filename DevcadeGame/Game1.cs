@@ -12,9 +12,9 @@ namespace DevcadeGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D metalBar;
+        public Texture2D MetalBarTexture { get; set; }
         public static Tuple<int, int> Coordinates = Tuple.Create(420, 980); // width, height
-        private Dictionary<int, int[]> metalBarPosition = new Dictionary<int, int[]>();
+        public MetalBar MetalBar { get; set; }
 
         /// <summary>
         /// Game constructor
@@ -32,6 +32,9 @@ namespace DevcadeGame
         protected override void Initialize()
         {
             Input.Initialize(); // Sets up the input library
+
+            MetalBarTexture = new Texture2D(GraphicsDevice, 1, 1);
+            MetalBarTexture.SetData(new Color[] { Color.Gray });
 
             // Set window size if running debug (in release it will be fullscreen)
             #region
@@ -55,10 +58,8 @@ namespace DevcadeGame
 #endif
             #endregion
 
-            metalBarPosition[0] = new int[] { 0, Coordinates.Item2 - 30 };
-            metalBarPosition[1] = new int[] { Coordinates.Item1, Coordinates.Item2 - 30};
-
             // TODO: Add your initialization logic here
+            MetalBar = new MetalBar(MetalBarTexture);
 
             base.Initialize();
         }
@@ -70,9 +71,7 @@ namespace DevcadeGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            metalBar = Content.Load<Texture2D>("download");
-
-
+            // MetalBarTexture = Content.Load<Texture2D>("download");
 
             // TODO: use this.Content to load your game content here
             // ex.
@@ -98,44 +97,7 @@ namespace DevcadeGame
             }
 
             // TODO: Add your update logic here
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {                
-                Debug.WriteLine("Up (Left)");
-                metalBarPosition[0] = new int[] { 0, metalBarPosition[0][1] + 10 };
-                if (metalBarPosition[0][1] + 30 > Coordinates.Item2)
-                {
-                    metalBarPosition[0] = new int[] { 0, Coordinates.Item2 - 30};
-                }
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            {
-                Debug.WriteLine("Down (Left)");
-                metalBarPosition[0] = new int[] { 0, metalBarPosition[0][1] - 10 };
-                if (metalBarPosition[0][1] < 0)
-                {
-                    metalBarPosition[0] = new int[] { 0, 0 };
-                }
-
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                Debug.WriteLine("Up (Right)");
-                metalBarPosition[1] = new int[] { Coordinates.Item1, metalBarPosition[1][1] + 10 };
-                if (metalBarPosition[1][1] + 30 > Coordinates.Item2)
-                {
-                    metalBarPosition[1] = new int[] { Coordinates.Item1, Coordinates.Item2 - 30};
-                }
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                Debug.WriteLine("Down (Right)");
-                metalBarPosition[1] = new int[] { Coordinates.Item1, metalBarPosition[1][1] - 10 };
-                if (metalBarPosition[1][1] < 0)
-                {
-                    metalBarPosition[1] = new int[] { Coordinates.Item1, 0 };
-                }
-
-            }
+            MetalBar.Update(gameTime);
 
             // Debug.WriteLine($"H1: {Heights[0]} | H2: {Heights[1]}");
 
@@ -152,21 +114,10 @@ namespace DevcadeGame
 
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
-            Debug.WriteLine("RightBar: " + metalBarPosition[1][0] + " " + metalBarPosition[1][1]);
-            Debug.WriteLine("LeftBar: " + metalBarPosition[0][0] + " " + metalBarPosition[0][1]);
-            int x1 = metalBarPosition[0][0];
-            int y1 = metalBarPosition[0][1];
-            int x2 = metalBarPosition[1][0];
-            int y2 = metalBarPosition[1][1];
-            int y = y2 - y1;
-            int x = x2 - x1;
-            Debug.WriteLine(x + " " + y);
-            double rotation = Math.Atan2(y, x);
-            Debug.WriteLine((float)rotation);
-            int[] midpoint = new int[] {(x1 + x2) / 2, (y1 + y2) / 2};
-            _spriteBatch.Draw(metalBar, new Rectangle(0, metalBarPosition[0][1], Coordinates.Item1 + 800, 30), null, new Color(255, 255, 255), (float)rotation, new Vector2(0, 0), SpriteEffects.None, 0);
-            _spriteBatch.End();
 
+            MetalBar.Draw(_spriteBatch);
+
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }

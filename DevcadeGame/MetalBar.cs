@@ -10,15 +10,83 @@ namespace DevcadeGame
 {
     public class MetalBar
     {
-        private Texture2D _texture;
-        private Dictionary<int, int[]> metalBarPosition = new Dictionary<int, int[]>();
+        private Rectangle hitbox;
 
-        public MetalBar(Texture2D _texture)
+        private Vector2 position;
+
+        private Vector2 positionL;
+        private Vector2 positionR;
+
+        private float rotation;
+
+        public Texture2D Texture { get; private set; }
+
+        private Color Color { get; set; }
+
+        public MetalBar(Texture2D texture)
         {
-            this._texture = _texture;
-            metalBarPosition[0] = new int[] { 0, Game1.Coordinates.Item2 - 30 };
-            metalBarPosition[1] = new int[] { Game1.Coordinates.Item1, Game1.Coordinates.Item2 - 30 };
+            this.Texture = texture;
+
+            this.hitbox = new Rectangle(0, Game1.Coordinates.Item2 - 30, Game1.Coordinates.Item1 + 800, 30);
+            this.position = new Vector2(hitbox.X, hitbox.Y);
+            this.positionL = new Vector2(0, Game1.Coordinates.Item2 - 30);
+            this.positionR = new Vector2(Game1.Coordinates.Item1, Game1.Coordinates.Item2 - 30);
+            this.Color = Color.DarkGray;
+            this.rotation = 0;
         }
-        
+        public Rectangle Hitbox
+        {
+            get => hitbox;
+            set => hitbox = value;
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                Debug.WriteLine("Up (Left)");
+                positionL.Y += 10;
+                if (positionL.Y > Game1.Coordinates.Item2 - 30)
+                {
+                    positionL.Y = Game1.Coordinates.Item2 - 30;
+                }
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                Debug.WriteLine("Down (Left)");
+                positionL.Y -= 10;
+                if (positionL.Y < 0)
+                {
+                    positionL.Y = 0;
+                }
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                Debug.WriteLine("Up (Right)");
+                positionR.Y += 10;
+                if (positionR.Y > Game1.Coordinates.Item2 - 30)
+                {
+                    positionR.Y = Game1.Coordinates.Item2 - 30;
+                }
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                Debug.WriteLine("Down (Right)");
+                positionR.Y -= 10;
+                if (positionR.Y < 0)
+                {
+                    positionR.Y = 0;
+                }
+            }
+
+            rotation = (float)Math.Atan2(positionR.Y - positionL.Y, positionR.X - positionL.X);
+            hitbox.Y = (int)positionL.Y;
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            sb.Draw(Texture, hitbox, null, Color, rotation, new Vector2(0, 0), SpriteEffects.None, 0.0f);
+        }
+
     }
 }
