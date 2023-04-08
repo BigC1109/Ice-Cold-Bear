@@ -14,7 +14,7 @@ namespace DevcadeGame
         {
             INCORRECT,
             CORRECT,
-            EXIT
+            ENTER
         }
 
 
@@ -32,7 +32,13 @@ namespace DevcadeGame
 
         private Game1 game;
 
-        private int scale;
+        private float scale;
+
+        public Vector2 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
 
         public Hole(int radius, Vector2 position, HoleState state, Game1 game)
         {
@@ -41,7 +47,7 @@ namespace DevcadeGame
             this.state = state;
             this.game = game;
             this.color = Color.DarkCyan;
-            this.scale = radius / 512;
+            this.scale = (float)radius / 600;
         }
 
         public void LoadContent(ContentManager contentManager)
@@ -51,8 +57,12 @@ namespace DevcadeGame
 
         private bool ContainsBall()
         {
-            if (this.position.X < game.Ball.Body.Position.X && this.position.X + (radius * 2) > game.Ball.Body.Position.X
-                && this.position.Y > game.Ball.Body.Position.Y && this.position.Y - (radius * 2) < game.Ball.Body.Position.Y)
+            Vector2 ballCenter = game.Ball.Body.Position;
+            int ballRadius = game.Ball.Radius;
+            if (ballCenter.X + ballRadius < (this.position.X + (radius * 2)) &&
+                ballCenter.Y + ballRadius < (this.position.Y + (radius * 2)) &&
+                ballCenter.X - ballRadius > (this.position.X) &&
+                ballCenter.Y - ballRadius > (this.position.Y))
             {
                 return true;
             }
@@ -63,14 +73,21 @@ namespace DevcadeGame
         {
             if (this.state == HoleState.INCORRECT && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
             {
-                Debug.WriteLine("Successful?");
+                Debug.WriteLine($"Successful? {game.Ball.Body.Position - new Vector2(25, 25)} | {this.position}");
+                this.color = Color.Red;
             } else if (this.state == HoleState.CORRECT && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
             {
 
-            } else if (this.state == HoleState.EXIT && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
+            } else if (this.state == HoleState.ENTER && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
             {
 
+            } else
+            {
+                this.color = Color.DarkCyan;
             }
+
+            //position = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+
             //
             //Debug.WriteLine(game.Ball.Body.Position);
 
@@ -80,7 +97,7 @@ namespace DevcadeGame
         {
             sb.Draw(texture, position, null, color, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
             // (texture, body.Position, null, color, body.Rotation, origin, scale, SpriteEffects.None, 0);
-            Debug.WriteLine(position.X + " " + position.Y);
+            //Debug.WriteLine(position.X + " " + position.Y);
         }
 
     }

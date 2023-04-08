@@ -18,7 +18,8 @@ namespace DevcadeGame
         public MetalBar MetalBar { get; set; }
         public Ball Ball { get; set; }
         public World World { get; set; }
-        public Hole Hole { get; set; }
+        public LinkedList<Hole> holes = new LinkedList<Hole>();
+        public bool testingvalue = true;
 
         /// <summary>
         /// Game constructor
@@ -27,7 +28,7 @@ namespace DevcadeGame
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = false;
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -95,7 +96,27 @@ namespace DevcadeGame
             var metalBarBody = World.CreateRectangle(Coordinates.Item1 + 800, 30, 1, new Vector2(0, Coordinates.Item2 - 30), 0, BodyType.Static);
             MetalBar = new MetalBar(MetalBarTexture, metalBarBody);
 
-            Hole = new Hole(50, new Vector2(150, 150), Hole.HoleState.INCORRECT, this);
+            // Create all Holes statically
+            holes.AddLast(new Hole(25, new Vector2(360, 900), Hole.HoleState.ENTER, this));
+            holes.AddLast(new Hole(25, new Vector2(60, 10), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(130, 10), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(95, 60), Hole.HoleState.CORRECT, this)); // Level 10
+            holes.AddLast(new Hole(25, new Vector2(160, 60), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(125, 110), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(30, 60), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(65, 110), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(95, 160), Hole.HoleState.INCORRECT, this));
+
+            holes.AddLast(new Hole(25, new Vector2(195, 125), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(230, 80), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(265, 35), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(305, 80), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(340, 125), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(305, 170), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(265, 215), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(265, 125), Hole.HoleState.CORRECT, this)); // Level 9
+
+            //new Hole(25, new Vector2(40, 900), Hole.HoleState.INCORRECT, this)
 
             base.Initialize();
 
@@ -111,7 +132,12 @@ namespace DevcadeGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Ball.LoadContent(Content);
-            Hole.LoadContent(Content);
+
+            // Load all holes
+            foreach (Hole hole in holes)
+            {
+                hole.LoadContent(Content);
+            }
 
             // BallTexture = Content.Load<Texture2D>("CircleSprite");
 
@@ -146,7 +172,36 @@ namespace DevcadeGame
 
             // Debug.WriteLine($"H1: {Heights[0]} | H2: {Heights[1]}");
 
-            Hole.Update(gameTime);
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.L) && testingvalue == true)
+            {
+                Hole newHole = new Hole(25, new Vector2(Mouse.GetState().Position.X - 25, Mouse.GetState().Position.Y - 25), Hole.HoleState.ENTER, this);
+                newHole.LoadContent(Content);
+                Debug.WriteLine("THASTASHTASHTASHT");
+                holes.AddLast(newHole);
+                testingvalue = false;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            {
+                Debug.WriteLine("----------Start----------");
+                foreach (Hole hole in holes)
+                {
+                    Debug.WriteLine($"holes.AddLast(new Hole(25, new Vector2({hole.Position.X}, {hole.Position.Y}), Hole.HoleState.INCORRECT, this));");
+                }
+                Debug.WriteLine("-----------End-----------");
+            }
+
+            if (Keyboard.GetState().IsKeyUp(Keys.L))
+            {
+                testingvalue = true;
+            }
+
+            foreach (Hole hole in holes)
+            {
+                hole.Update(gameTime);
+            }
 
             base.Update(gameTime);
         }
@@ -162,9 +217,18 @@ namespace DevcadeGame
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
 
+            foreach (Hole hole in holes)
+            {
+                hole.Draw(_spriteBatch);
+            }
+
             Ball.Draw(_spriteBatch);
             MetalBar.Draw(_spriteBatch);
-            Hole.Draw(_spriteBatch);
+
+            var test = new Texture2D(GraphicsDevice, 1, 1);
+            test.SetData(new Color[] { Color.Red });
+
+            _spriteBatch.Draw(test, new Rectangle((int)Ball.Body.Position.X, (int)Ball.Body.Position.Y, Ball.Radius, Ball.Radius), Color.Red);
 
             _spriteBatch.End();
             base.Draw(gameTime);

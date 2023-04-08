@@ -66,6 +66,12 @@ namespace DevcadeGame
             set => body = value;
         }
 
+        public int Radius
+        {
+            get => radius;
+            set => radius = value;
+        }
+
         public void Update(GameTime gameTime)
         {
             //if (!Colliding)
