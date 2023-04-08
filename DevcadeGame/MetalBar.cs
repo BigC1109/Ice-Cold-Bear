@@ -45,11 +45,17 @@ namespace DevcadeGame
             set => hitbox = value;
         }
 
+        public Body Body
+        {
+            get => body;
+            set => body = value;
+        }
+
         public void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                Debug.WriteLine("Up (Left)");
+                //Debug.WriteLine("Up (Left)");
                 positionL.Y += 10;
                 if (positionL.Y > Game1.Coordinates.Item2 - 30)
                 {
@@ -58,7 +64,7 @@ namespace DevcadeGame
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                Debug.WriteLine("Down (Left)");
+                //Debug.WriteLine("Down (Left)");
                 positionL.Y -= 10;
                 if (positionL.Y < 0)
                 {
@@ -67,7 +73,7 @@ namespace DevcadeGame
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                Debug.WriteLine("Up (Right)");
+                //Debug.WriteLine("Up (Right)");
                 positionR.Y += 10;
                 if (positionR.Y > Game1.Coordinates.Item2 - 30)
                 {
@@ -76,7 +82,7 @@ namespace DevcadeGame
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                Debug.WriteLine("Down (Right)");
+                //Debug.WriteLine("Down (Right)");
                 positionR.Y -= 10;
                 if (positionR.Y < 0)
                 {

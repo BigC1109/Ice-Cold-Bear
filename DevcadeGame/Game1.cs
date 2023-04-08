@@ -18,6 +18,7 @@ namespace DevcadeGame
         public MetalBar MetalBar { get; set; }
         public Ball Ball { get; set; }
         public World World { get; set; }
+        public Hole Hole { get; set; }
 
         /// <summary>
         /// Game constructor
@@ -37,7 +38,7 @@ namespace DevcadeGame
             Input.Initialize(); // Sets up the input library
 
             World = new World();
-            World.Gravity = new Vector2(0, 40f);
+            World.Gravity = new Vector2(0, 400f);
 
             var top = 0;
             var bottom = Coordinates.Item2;
@@ -56,12 +57,13 @@ namespace DevcadeGame
                 edge.SetRestitution(1);
             }
 
-            var radius = 25;
+            var radius = 15;
             var position = new Vector2(Coordinates.Item1 / 2, Coordinates.Item2 / 2);
             var body = World.CreateCircle(radius, 1, position, BodyType.Dynamic);
-            body.SetRestitution(0);
+            body.SetRestitution(0.8f);
+            body.SetFriction(1);
 
-            Ball = new Ball(radius, body);
+            Ball = new Ball(radius, body, this);
 
             MetalBarTexture = new Texture2D(GraphicsDevice, 1, 1);
             MetalBarTexture.SetData(new Color[] { Color.Gray });
@@ -93,7 +95,12 @@ namespace DevcadeGame
             var metalBarBody = World.CreateRectangle(Coordinates.Item1 + 800, 30, 1, new Vector2(0, Coordinates.Item2 - 30), 0, BodyType.Static);
             MetalBar = new MetalBar(MetalBarTexture, metalBarBody);
 
+            Hole = new Hole(50, new Vector2(150, 150), Hole.HoleState.INCORRECT, this);
+
             base.Initialize();
+
+
+
         }
 
         /// <summary>
@@ -104,6 +111,7 @@ namespace DevcadeGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Ball.LoadContent(Content);
+            Hole.LoadContent(Content);
 
             // BallTexture = Content.Load<Texture2D>("CircleSprite");
 
@@ -138,6 +146,8 @@ namespace DevcadeGame
 
             // Debug.WriteLine($"H1: {Heights[0]} | H2: {Heights[1]}");
 
+            Hole.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -154,6 +164,7 @@ namespace DevcadeGame
 
             Ball.Draw(_spriteBatch);
             MetalBar.Draw(_spriteBatch);
+            Hole.Draw(_spriteBatch);
 
             _spriteBatch.End();
             base.Draw(gameTime);
