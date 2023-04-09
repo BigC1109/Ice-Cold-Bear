@@ -26,7 +26,11 @@ namespace DevcadeGame
 
         private Color Color { get; set; }
 
-        public MetalBar(Texture2D texture, Body body)
+        private bool reseting;
+
+        private Game1 game;
+
+        public MetalBar(Texture2D texture, Body body, Game1 game)
         {
             this.Texture = texture;
 
@@ -36,6 +40,8 @@ namespace DevcadeGame
             this.positionR = new Vector2(Game1.Coordinates.Item1, Game1.Coordinates.Item2 - 30);
             this.Color = Color.DarkGray;
             this.rotation = 0;
+            this.reseting = false;
+            this.game = game;
 
             this.body = body;
         }
@@ -51,42 +57,82 @@ namespace DevcadeGame
             set => body = value;
         }
 
+        public bool Reseting
+        {
+            get => reseting;
+            set => reseting = value;
+        }
+
+        public void resetBar()
+        {
+            this.reseting = true;
+        }
+
         public void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            if (!this.reseting)
             {
-                //Debug.WriteLine("Up (Left)");
-                positionL.Y += 10;
+                if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    //Debug.WriteLine("Up (Left)");
+                    positionL.Y += 5;
+                    if (positionL.Y > Game1.Coordinates.Item2 - 30)
+                    {
+                        positionL.Y = Game1.Coordinates.Item2 - 30;
+                    }
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                {
+                    //Debug.WriteLine("Down (Left)");
+                    positionL.Y -= 5;
+                    if (positionL.Y < 0)
+                    {
+                        positionL.Y = 0;
+                    }
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    //Debug.WriteLine("Up (Right)");
+                    positionR.Y += 5;
+                    if (positionR.Y > Game1.Coordinates.Item2 - 30)
+                    {
+                        positionR.Y = Game1.Coordinates.Item2 - 30;
+                    }
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                {
+                    //Debug.WriteLine("Down (Right)");
+                    positionR.Y -= 5;
+                    if (positionR.Y < 0)
+                    {
+                        positionR.Y = 0;
+                    }
+                }
+            } else
+            {
+                if (positionL.Y < Game1.Coordinates.Item2 - 30)
+                {
+                    positionL.Y += 5;
+                }
                 if (positionL.Y > Game1.Coordinates.Item2 - 30)
                 {
                     positionL.Y = Game1.Coordinates.Item2 - 30;
                 }
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            {
-                //Debug.WriteLine("Down (Left)");
-                positionL.Y -= 10;
-                if (positionL.Y < 0)
+
+                if (positionR.Y < Game1.Coordinates.Item2 - 30)
                 {
-                    positionL.Y = 0;
+                    positionR.Y += 5;
                 }
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                //Debug.WriteLine("Up (Right)");
-                positionR.Y += 10;
                 if (positionR.Y > Game1.Coordinates.Item2 - 30)
                 {
                     positionR.Y = Game1.Coordinates.Item2 - 30;
                 }
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                //Debug.WriteLine("Down (Right)");
-                positionR.Y -= 10;
-                if (positionR.Y < 0)
+
+                if (positionL.Y >= Game1.Coordinates.Item2 - 30 && positionR.Y >= Game1.Coordinates.Item2 - 30)
                 {
-                    positionR.Y = 0;
+                    game.Ball.resetBall();
+                    game.Ball.Body.IgnoreGravity = false;
+                    reseting = false;
                 }
             }
 

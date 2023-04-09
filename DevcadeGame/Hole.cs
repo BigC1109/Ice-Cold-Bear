@@ -10,7 +10,7 @@ namespace DevcadeGame
 {
     public class Hole
     {
-        public enum HoleState
+        public enum HoleType
         {
             INCORRECT,
             CORRECT,
@@ -28,11 +28,13 @@ namespace DevcadeGame
 
         private int radius;
 
-        private HoleState state;
+        private HoleType state;
 
         private Game1 game;
 
         private float scale;
+
+        private bool specialHole;
 
         public Vector2 Position
         {
@@ -40,7 +42,25 @@ namespace DevcadeGame
             set { position = value; }
         }
 
-        public Hole(int radius, Vector2 position, HoleState state, Game1 game)
+        public bool SpecialHole
+        {
+            get => specialHole;
+            set => specialHole = value;
+        }
+
+        public HoleType State
+        {
+            get => state;
+            set => state = value;
+        }
+
+        public Color Color
+        {
+            get => color;
+            set => color = value;
+        }
+
+        public Hole(int radius, Vector2 position, HoleType state, bool specialHole, Game1 game)
         {
             this.radius = radius;
             this.position = position;
@@ -48,6 +68,7 @@ namespace DevcadeGame
             this.game = game;
             this.color = Color.DarkCyan;
             this.scale = (float)radius / 600;
+            this.specialHole = specialHole;
         }
 
         public void LoadContent(ContentManager contentManager)
@@ -71,19 +92,32 @@ namespace DevcadeGame
 
         public void Update(GameTime gameTime)
         {
-            if (this.state == HoleState.INCORRECT && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
+            if (this.state == HoleType.INCORRECT && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
             {
-                Debug.WriteLine($"Successful? {game.Ball.Body.Position - new Vector2(25, 25)} | {this.position}");
-                this.color = Color.Red;
-            } else if (this.state == HoleState.CORRECT && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
-            {
+                game.Ball.resetBall();
+                game.MetalBar.resetBar();
+                game.Level.failedLevel(this);
 
-            } else if (this.state == HoleState.ENTER && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
+            } else if (this.state == HoleType.CORRECT && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
             {
+                game.Ball.resetBall();
+                game.MetalBar.resetBar();
+                game.Level.nextLevel();
+            } else if (this.state == HoleType.ENTER && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
+            {
+            // Nothing really needs to go here, as the ball shouldn't fall in this hole.
+            }
 
-            } else
+            if (!game.MetalBar.Reseting)
             {
-                this.color = Color.DarkCyan;
+                if (this.state == HoleType.CORRECT)
+                {
+                    this.color = Color.DarkGreen;
+                }
+                else
+                {
+                    this.color = Color.DarkCyan;
+                }
             }
 
             //position = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);

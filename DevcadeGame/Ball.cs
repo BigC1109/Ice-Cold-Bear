@@ -72,24 +72,24 @@ namespace DevcadeGame
             set => radius = value;
         }
 
+        public void resetBall()
+        {
+            body.IgnoreGravity = true;
+            body.Position = new Vector2(385, 925); // Position of the ENTER hole (maybe do this nicer?)
+            body.ResetDynamics();
+        }
+
         public void Update(GameTime gameTime)
         {
-            //if (!Colliding)
-            //{
-            //    body.Position = new Vector2(body.Position.X, body.Position.Y + 10);
-            //}
-
-            //if (body.Position.Y > game.MetalBar.Body.Position.Y)
-            //{
-            //    //Debug.WriteLine($"MetalBar: {game.MetalBar.Body.Position.Y} | Ball: {body.Position.Y}");
-            //    body.Position = new Vector2(body.Position.X, body.Position.Y - 10);
-            //}
             Colliding = false;
         }
 
         public void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, body.Position, null, color, body.Rotation, origin, scale, SpriteEffects.None, 0);
+            if (!game.MetalBar.Reseting)
+            {
+                sb.Draw(texture, body.Position, null, color, body.Rotation, origin, scale, SpriteEffects.None, 0);
+            }
         }
 
         private bool CollisionHandler(Fixture fixture, Fixture other, Contact contact)

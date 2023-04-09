@@ -20,6 +20,7 @@ namespace DevcadeGame
         public World World { get; set; }
         public LinkedList<Hole> holes = new LinkedList<Hole>();
         public bool testingvalue = true;
+        public Level Level { get; set; }
 
         /// <summary>
         /// Game constructor
@@ -94,29 +95,32 @@ namespace DevcadeGame
             // TODO: Add your initialization logic here
 
             var metalBarBody = World.CreateRectangle(Coordinates.Item1 + 800, 30, 1, new Vector2(0, Coordinates.Item2 - 30), 0, BodyType.Static);
-            MetalBar = new MetalBar(MetalBarTexture, metalBarBody);
+            MetalBar = new MetalBar(MetalBarTexture, metalBarBody, this);
 
             // Create all Holes statically
-            holes.AddLast(new Hole(25, new Vector2(360, 900), Hole.HoleState.ENTER, this));
-            holes.AddLast(new Hole(25, new Vector2(60, 10), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(130, 10), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(95, 60), Hole.HoleState.CORRECT, this)); // Level 10
-            holes.AddLast(new Hole(25, new Vector2(160, 60), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(125, 110), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(30, 60), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(65, 110), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(95, 160), Hole.HoleState.INCORRECT, this));
+            holes.AddLast(new Hole(25, new Vector2(360, 900), Hole.HoleType.ENTER, false, this));
 
-            holes.AddLast(new Hole(25, new Vector2(195, 125), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(230, 80), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(265, 35), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(305, 80), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(340, 125), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(305, 170), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(265, 215), Hole.HoleState.INCORRECT, this));
-            holes.AddLast(new Hole(25, new Vector2(265, 125), Hole.HoleState.CORRECT, this)); // Level 9
+            holes.AddLast(new Hole(25, new Vector2(60, 10), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(130, 10), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(95, 60), Hole.HoleType.INCORRECT, true, this)); // Level 10
+            holes.AddLast(new Hole(25, new Vector2(160, 60), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(125, 110), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(30, 60), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(65, 110), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(95, 160), Hole.HoleType.INCORRECT, false, this));
 
-            //new Hole(25, new Vector2(40, 900), Hole.HoleState.INCORRECT, this)
+            holes.AddLast(new Hole(25, new Vector2(195, 125), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(230, 80), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(265, 35), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(305, 80), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(340, 125), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(305, 170), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(265, 215), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(265, 125), Hole.HoleType.INCORRECT, true, this)); // Level 9
+
+            Level = new Level(holes, this);
+            Level.nextLevel();
+            //new Hole(25, new Vector2(40, 900), Hole.HoleType.INCORRECT, this)
 
             base.Initialize();
 
@@ -166,8 +170,8 @@ namespace DevcadeGame
 
             // TODO: Add your update logic here
             MetalBar.Update(gameTime);
-
             Ball.Update(gameTime);
+            Level.Update(gameTime);
             World.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             // Debug.WriteLine($"H1: {Heights[0]} | H2: {Heights[1]}");
@@ -176,7 +180,7 @@ namespace DevcadeGame
 
             if (Keyboard.GetState().IsKeyDown(Keys.L) && testingvalue == true)
             {
-                Hole newHole = new Hole(25, new Vector2(Mouse.GetState().Position.X - 25, Mouse.GetState().Position.Y - 25), Hole.HoleState.ENTER, this);
+                Hole newHole = new Hole(25, new Vector2(Mouse.GetState().Position.X - 25, Mouse.GetState().Position.Y - 25), Hole.HoleType.ENTER, false, this);
                 newHole.LoadContent(Content);
                 Debug.WriteLine("THASTASHTASHTASHT");
                 holes.AddLast(newHole);
@@ -188,7 +192,7 @@ namespace DevcadeGame
                 Debug.WriteLine("----------Start----------");
                 foreach (Hole hole in holes)
                 {
-                    Debug.WriteLine($"holes.AddLast(new Hole(25, new Vector2({hole.Position.X}, {hole.Position.Y}), Hole.HoleState.INCORRECT, this));");
+                    Debug.WriteLine($"holes.AddLast(new Hole(25, new Vector2({hole.Position.X}, {hole.Position.Y}), Hole.HoleType.INCORRECT, false, this));");
                 }
                 Debug.WriteLine("-----------End-----------");
             }
@@ -225,10 +229,10 @@ namespace DevcadeGame
             Ball.Draw(_spriteBatch);
             MetalBar.Draw(_spriteBatch);
 
-            var test = new Texture2D(GraphicsDevice, 1, 1);
-            test.SetData(new Color[] { Color.Red });
+            //var test = new Texture2D(GraphicsDevice, 1, 1);
+            //test.SetData(new Color[] { Color.Red });
 
-            _spriteBatch.Draw(test, new Rectangle((int)Ball.Body.Position.X, (int)Ball.Body.Position.Y, Ball.Radius, Ball.Radius), Color.Red);
+            //_spriteBatch.Draw(test, new Rectangle((int)Ball.Body.Position.X, (int)Ball.Body.Position.Y, Ball.Radius, Ball.Radius), Color.Red);
 
             _spriteBatch.End();
             base.Draw(gameTime);
