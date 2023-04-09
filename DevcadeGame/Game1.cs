@@ -118,6 +118,14 @@ namespace DevcadeGame
             holes.AddLast(new Hole(25, new Vector2(265, 215), Hole.HoleType.INCORRECT, false, this));
             holes.AddLast(new Hole(25, new Vector2(265, 125), Hole.HoleType.INCORRECT, true, this)); // Level 9
 
+            holes.AddLast(new Hole(25, new Vector2(95, 215), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(45, 245), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(30, 300), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(55, 350), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(110, 375), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(155, 330), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(100, 290), Hole.HoleType.INCORRECT, true, this)); // Level 8
+
             Level = new Level(holes, this);
             Level.nextLevel();
             //new Hole(25, new Vector2(40, 900), Hole.HoleType.INCORRECT, this)
