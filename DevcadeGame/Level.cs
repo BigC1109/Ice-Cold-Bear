@@ -24,7 +24,7 @@ namespace DevcadeGame
         public Level (LinkedList<Hole> holes, Game1 game)
         {
             this.holes = holes;
-            this.curLevel = 0;
+            this.curLevel = 1;
             this.curObjective = null;
             this.ballFellIn = null;
             this.failed = false;
@@ -38,10 +38,9 @@ namespace DevcadeGame
                 passedLevel();
             }
            
-            int counter = 0;
             foreach (Hole hole in holes)
             {
-                if (hole.SpecialHole && counter == curLevel)
+                if (hole.LevelNumber == curLevel)
                 {
                     if (curObjective != null)
                     {
@@ -50,9 +49,6 @@ namespace DevcadeGame
                     hole.State = Hole.HoleType.CORRECT;
                     curObjective = hole;
                     break;
-                } else if (hole.SpecialHole)
-                {
-                    counter++;
                 }
             }
             Debug.WriteLine(curLevel);

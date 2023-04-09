@@ -60,7 +60,7 @@ namespace DevcadeGame
             }
 
             var radius = 15;
-            var position = new Vector2(Coordinates.Item1 / 2, Coordinates.Item2 / 2);
+            var position = new Vector2(385, 925);
             var body = World.CreateCircle(radius, 1, position, BodyType.Dynamic);
             body.SetRestitution(0.8f);
             body.SetFriction(1);
@@ -98,33 +98,76 @@ namespace DevcadeGame
             MetalBar = new MetalBar(MetalBarTexture, metalBarBody, this);
 
             // Create all Holes statically
-            holes.AddLast(new Hole(25, new Vector2(360, 900), Hole.HoleType.ENTER, false, this));
+            holes.AddLast(new Hole(25, new Vector2(360, 900), Hole.HoleType.ENTER, 0, this));
 
-            holes.AddLast(new Hole(25, new Vector2(60, 10), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(130, 10), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(95, 60), Hole.HoleType.INCORRECT, true, this)); // Level 10
-            holes.AddLast(new Hole(25, new Vector2(160, 60), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(125, 110), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(30, 60), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(65, 110), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(95, 160), Hole.HoleType.INCORRECT, false, this));
+            holes.AddLast(new Hole(25, new Vector2(0, 630), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(40, 695), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(105, 745), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(200, 690), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(285, 690), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(360, 635), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(355, 740), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(245, 745), Hole.HoleType.INCORRECT, 1, this)); // Level 1
 
-            holes.AddLast(new Hole(25, new Vector2(195, 125), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(230, 80), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(265, 35), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(305, 80), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(340, 125), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(305, 170), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(265, 215), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(265, 125), Hole.HoleType.INCORRECT, true, this)); // Level 9
+            holes.AddLast(new Hole(25, new Vector2(150, 580), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(95, 490), Hole.HoleType.INCORRECT, 0, this)); 
+            holes.AddLast(new Hole(25, new Vector2(95, 630), Hole.HoleType.INCORRECT, 2, this)); // Level 2
 
-            holes.AddLast(new Hole(25, new Vector2(95, 215), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(45, 245), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(30, 300), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(55, 350), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(110, 375), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(155, 330), Hole.HoleType.INCORRECT, false, this));
-            holes.AddLast(new Hole(25, new Vector2(100, 290), Hole.HoleType.INCORRECT, true, this)); // Level 8
+            holes.AddLast(new Hole(25, new Vector2(300, 585), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(235, 595), Hole.HoleType.INCORRECT, 3, this)); // Level 3
+
+            holes.AddLast(new Hole(25, new Vector2(60, 415), Hole.HoleType.INCORRECT, 4, this)); // Level 4
+
+            holes.AddLast(new Hole(25, new Vector2(125, 430), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(165, 475), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(210, 515), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(270, 505), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(180, 395), Hole.HoleType.INCORRECT, 5, this)); // Level 5
+
+            holes.AddLast(new Hole(25, new Vector2(210, 335), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(255, 380), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(300, 420), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(350, 465), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(305, 255), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(350, 300), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(390, 345), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(305, 340), Hole.HoleType.INCORRECT, 6, this)); // Level 6
+
+            holes.AddLast(new Hole(25, new Vector2(95, 215), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(45, 245), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(30, 300), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(55, 350), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(110, 375), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(155, 330), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(100, 290), Hole.HoleType.INCORRECT, 7, this)); // Level 7
+
+            holes.AddLast(new Hole(25, new Vector2(195, 125), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(230, 80), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(265, 35), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(305, 80), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(340, 125), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(305, 170), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(265, 215), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(265, 125), Hole.HoleType.INCORRECT, 8, this)); // Level 8
+
+            holes.AddLast(new Hole(25, new Vector2(60, 10), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(130, 10), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(160, 60), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(125, 110), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(30, 60), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(65, 110), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(95, 160), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(95, 60), Hole.HoleType.INCORRECT, 9, this)); // Level 9
+
+            // Miscellaneous Holes
+            holes.AddLast(new Hole(25, new Vector2(-5, 495), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(-5, 205), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(380, 200), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(380, 550), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(-5, 0), Hole.HoleType.INCORRECT, 0, this));
+            holes.AddLast(new Hole(25, new Vector2(375, -5), Hole.HoleType.INCORRECT, 0, this));
+
+
 
             Level = new Level(holes, this);
             Level.nextLevel();
@@ -188,7 +231,7 @@ namespace DevcadeGame
 
             if (Keyboard.GetState().IsKeyDown(Keys.L) && testingvalue == true)
             {
-                Hole newHole = new Hole(25, new Vector2(Mouse.GetState().Position.X - 25, Mouse.GetState().Position.Y - 25), Hole.HoleType.ENTER, false, this);
+                Hole newHole = new Hole(25, new Vector2(Mouse.GetState().Position.X - 25, Mouse.GetState().Position.Y - 25), Hole.HoleType.ENTER, 0, this);
                 newHole.LoadContent(Content);
                 Debug.WriteLine("THASTASHTASHTASHT");
                 holes.AddLast(newHole);

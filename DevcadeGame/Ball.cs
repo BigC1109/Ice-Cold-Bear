@@ -74,7 +74,6 @@ namespace DevcadeGame
 
         public void resetBall()
         {
-            body.IgnoreGravity = true;
             body.Position = new Vector2(385, 925); // Position of the ENTER hole (maybe do this nicer?)
             body.ResetDynamics();
         }

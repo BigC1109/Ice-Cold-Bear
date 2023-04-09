@@ -85,9 +85,9 @@ namespace DevcadeGame
                 {
                     //Debug.WriteLine("Down (Left)");
                     positionL.Y -= 5;
-                    if (positionL.Y < 0)
+                    if (positionL.Y < 31)
                     {
-                        positionL.Y = 0;
+                        positionL.Y = 31;
                     }
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.Left))
@@ -103,9 +103,9 @@ namespace DevcadeGame
                 {
                     //Debug.WriteLine("Down (Right)");
                     positionR.Y -= 5;
-                    if (positionR.Y < 0)
+                    if (positionR.Y < 31)
                     {
-                        positionR.Y = 0;
+                        positionR.Y = 31;
                     }
                 }
             } else
@@ -131,7 +131,6 @@ namespace DevcadeGame
                 if (positionL.Y >= Game1.Coordinates.Item2 - 30 && positionR.Y >= Game1.Coordinates.Item2 - 30)
                 {
                     game.Ball.resetBall();
-                    game.Ball.Body.IgnoreGravity = false;
                     reseting = false;
                 }
             }

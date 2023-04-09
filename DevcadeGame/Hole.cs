@@ -34,7 +34,9 @@ namespace DevcadeGame
 
         private float scale;
 
-        private bool specialHole;
+        private int levelNumber;
+
+        private SpriteFont font;
 
         public Vector2 Position
         {
@@ -42,10 +44,10 @@ namespace DevcadeGame
             set { position = value; }
         }
 
-        public bool SpecialHole
+        public int LevelNumber
         {
-            get => specialHole;
-            set => specialHole = value;
+            get => levelNumber;
+            set => levelNumber = value;
         }
 
         public HoleType State
@@ -60,7 +62,7 @@ namespace DevcadeGame
             set => color = value;
         }
 
-        public Hole(int radius, Vector2 position, HoleType state, bool specialHole, Game1 game)
+        public Hole(int radius, Vector2 position, HoleType state, int levelNumber, Game1 game)
         {
             this.radius = radius;
             this.position = position;
@@ -68,12 +70,13 @@ namespace DevcadeGame
             this.game = game;
             this.color = Color.DarkCyan;
             this.scale = (float)radius / 600;
-            this.specialHole = specialHole;
+            this.levelNumber = levelNumber;
         }
 
         public void LoadContent(ContentManager contentManager)
         {
             this.texture = contentManager.Load<Texture2D>("MetalBall");
+            this.font = contentManager.Load<SpriteFont>("File");
         }
 
         private bool ContainsBall()
@@ -104,8 +107,8 @@ namespace DevcadeGame
                 game.MetalBar.resetBar();
                 game.Level.nextLevel();
             } else if (this.state == HoleType.ENTER && ContainsBall()) // Change true into checking if the current Hole that fully contains the ball
-            {
-            // Nothing really needs to go here, as the ball shouldn't fall in this hole.
+            { 
+                // Nothing really needs to go here, as the ball shouldn't fall in this hole.
             }
 
             if (!game.MetalBar.Reseting)
@@ -130,6 +133,10 @@ namespace DevcadeGame
         public void Draw(SpriteBatch sb)
         {
             sb.Draw(texture, position, null, color, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            if (levelNumber != 0)
+            {
+                sb.DrawString(font, levelNumber.ToString(), position + new Vector2(18, 8), Color.WhiteSmoke);
+            }
             // (texture, body.Position, null, color, body.Rotation, origin, scale, SpriteEffects.None, 0);
             //Debug.WriteLine(position.X + " " + position.Y);
         }
