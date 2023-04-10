@@ -44,6 +44,9 @@
 /processorParam:TextureFormat=Compressed
 /build:File.spritefont
 
+#begin FjallaOne-Regular.ttf
+/copy:FjallaOne-Regular.ttf
+
 #begin Hole.png
 /importer:TextureImporter
 /processor:TextureProcessor
